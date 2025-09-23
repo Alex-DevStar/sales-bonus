@@ -6,6 +6,8 @@
  */
 function calculateSimpleRevenue(purchase, _product) {
    // @TODO: Расчет выручки от операции
+      const { discount, sale_price, quantity } = purchase;
+
 }
 
 /**
@@ -15,8 +17,13 @@ function calculateSimpleRevenue(purchase, _product) {
  * @param seller карточка продавца
  * @returns {number}
  */
+
+const total = data.sellers.length;
+
 function calculateBonusByProfit(index, total, seller) {
     // @TODO: Расчет бонуса от позиции в рейтинге
+      const { profit } = seller;
+
 }
 
 /**
@@ -26,9 +33,47 @@ function calculateBonusByProfit(index, total, seller) {
  * @returns {{revenue, top_products, bonus, name, sales_count, profit, seller_id}[]}
  */
 function analyzeSalesData(data, options) {
+     const { calculateRevenue, calculateBonus } = options; // Сюда передадим функции для расчётов
+
     // @TODO: Проверка входных данных
+    if (
+  data.purchase_records === undefined ||
+  !Array.isArray(data.purchase_records) ||
+  data.purchase_records.length === 0
+) {
+  console.log("Некорректные данные о продажах");
+}
+
+ if (
+  data.sellers === undefined ||
+  !Array.isArray(data.sellers) ||
+  data.sellers.length === 0
+) {
+  console.log("Некорректные данные о продавцах");
+}
+
+ if (
+  data.products === undefined ||
+  !Array.isArray(data.products) ||
+  data.products.length === 0
+) {
+  console.log("Некорректные данные о товарах");
+}
 
     // @TODO: Проверка наличия опций
+
+
+if (options === undefined || options === null) {
+  console.log("В качестве функции ничего не передано")
+}
+
+if (typeof options.calculateRevenue !== 'function') {
+  console.log("Переданные значения в расчет доходов не являются функцией")
+}
+
+if (typeof options.calculateBonus !== 'function') {
+  console.log("Переданные значения в расчет бонусов не являются функцией")
+}
 
     // @TODO: Подготовка промежуточных данных для сбора статистики
 
@@ -41,4 +86,15 @@ function analyzeSalesData(data, options) {
     // @TODO: Назначение премий на основе ранжирования
 
     // @TODO: Подготовка итоговой коллекции с нужными полями
-}
+    const sellersMap = new Map();
+data.sellers.forEach((seller) => {
+  sellersMap.set(seller.id,
+    {
+    id: seller.id,
+    name: `${seller.first_name} ${seller.last_name}`,
+    revenue: 0,
+    profit: 0,
+    sales_count: 0,
+    products_sold: {}
+  });
+});
