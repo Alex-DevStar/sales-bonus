@@ -112,12 +112,13 @@ return acc;
 data.purchase_records.forEach(record => { // Чек
         const seller = sellerIndex[record.seller_id]; // Продавец
           seller.sales_count++;            // Увеличить количество продаж
-          seller.revenue+= record.total_amount;          // Увеличить общую сумму всех продаж
+
+        // Увеличить общую сумму всех продаж
 
         // Расчёт прибыли для каждого товара
         record.items.forEach(item => {
             const product = productIndex[item.sku]; // Товар
-            const cost = item.purchase_price * item.quantity;   // Посчитать себестоимость (cost) товара как product.purchase_price, умноженную на количество товаров из чека
+            const cost = product.purchase_price * item.quantity;   // Посчитать себестоимость (cost) товара как product.purchase_price, умноженную на количество товаров из чека
             const revenue = calculateRevenue(item, product);    // Посчитать выручку (revenue) с учётом скидки через функцию calculateRevenue
             seller.profit += revenue - cost;  // Посчитать прибыль: выручка минус себестоимость
             seller.revenue += revenue;  // Увеличить общую накопленную прибыль (profit) у продавца
@@ -155,3 +156,4 @@ data.purchase_records.forEach(record => { // Чек
   top_products: seller.top_products,
   bonus: +seller.bonus.toFixed(2)
 }));
+}
