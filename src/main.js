@@ -123,8 +123,8 @@ function analyzeSalesData(data, options) {
       const product = productIndex[item.sku]; // Товар
       const cost = product.purchase_price * item.quantity; // Посчитать себестоимость (cost) товара как product.purchase_price, умноженную на количество товаров из чека
       const revenue = calculateRevenue(item, product); // Посчитать выручку (revenue) с учётом скидки через функцию calculateRevenue
-      seller.profit = +(seller.profit + (revenue - cost)).toFixed(2); // Посчитать прибыль: выручка минус себестоимость
-      seller.revenue = +(seller.revenue + revenue).toFixed(2); // Увеличить общую накопленную выручку у продавца
+      seller.profit += revenue - cost; // Посчитать прибыль: выручка минус себестоимость
+      seller.revenue += revenue; // Увеличить общую накопленную прибыль (profit) у продавца
 
       // Учёт количества проданных товаров
       if (!seller.products_sold[item.sku]) {
